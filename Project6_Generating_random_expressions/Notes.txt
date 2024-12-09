@@ -1,0 +1,669 @@
+Task 21 - Consider the expression syntax tree discussed here:https://ruslanspivak.com/lsbasi-part7/. Develop a python program that generates a set of random expressions based on the syntax tree definition. (e.g., this may be useful to generate synthetic expression dataset)
+
+
+
+##PART-1
+
+Interpreter/Compiler:
+		Goal: - Their goal is to translate a source program in some high level language into some other form.
+
+Compiler :
+	Source Code ---> Machine Language ----> Machine
+
+	-It translates the source code to the machine language.
+
+Interpreter:
+	Source Code ---> Interpreter 
+	
+	- It processes without translating it into machine language first.
+
+
+
+Pascal Language:
+		- Procedural programming Language
+		- Developed on the pattern ALGOL 60
+
+ALGOL 60 - It is a member of ALGOL Family of computer programming languages.
+
+
+Token - a small single unit 
+Lexical analysis - The process of breaking the input string into tokens is called lexical analysis.
+
+Step 1- reading the input and converting it to a stream of tokens.
+The part of the interpreter that does it is called a lexical analyzer, or lexer for short.
+- this is also called as Scanner or Tokenizer. - That is a part of interpreter or compiler that turns the input of characters into a stream of tokens.
+
+
+
+Token Types: INT, PLUS, EOF
+	- EOF - it is a token used to indicate that there is no more input left for lexical analysis.
+
+
+EOFError - It is raised when one of the built-in functions input() ot raw_input() hits an end of file condition(EOF) without reading any data.
+
+EOF - ctrl + D or ctrl + Z
+
+
+- calls the Interpreter class and passes text to it and initializes the parameters
+	- defining the __init__ function
+		- initializing the text to text
+		- making pos = 0
+		- current token = None
+
+
+	- defining error function
+		- printing if there is an error
+
+
+	- defining the get token function:
+		- assigning the text to text variable
+		- checking if pos > length of text -1 :
+			- if yes returning the EOF
+		- making current character equal to pos of text
+		- checking if the current character is digit or plus
+			- if yes, calling the Token class 
+			- Incrementing the pos
+			- returning token
+		- Similarly for + 
+
+- calls the expr function using the object and storing the return value to the result variable.
+	- defining the expr function :
+		- calling the get next token function to the current token.
+
+		- storing the current token to the left 
+		- calling the eat function and passing the type.
+			- eat function definition:
+					checks whether the current token type and the passed token is equal.
+			if yes, calls the get next token function and stores it in current token.
+		- again stores the latest token in op and calls the eat function.
+		- similarly eat function is repeated.
+		- again the next token is stored in the right and calls the eat function.
+		- this time inside the get next token the EOF is called.
+		- now the added value of left and right is stored in result variable.
+		- this returns the result variable to the result variable.
+
+- prints the result.
+
+
+
+##PART-2 - Adding Whitespace, for multi digits and subtraction
+		
+Adding minus to the type of tokens 
+	
+
+
+Token Types: INT, PLUS, EOF, MINUS
+	- EOF - it is a token used to indicate that there is no more input left for lexical analysis.
+
+
+EOFError - It is raised when one of the built-in functions input() ot raw_input() hits an end of file condition(EOF) without reading any data.
+
+EOF - ctrl + D or ctrl + Z
+
+
+- calls the Interpreter class and passes text to it and initializes the parameters
+	- defining the __init__ function
+		- initializing the text to text
+		- making pos = 0
+		- current token = None
+		- current char = text[self.pos]
+
+
+	- defining error function
+		- printing if there is an error
+
+- calls the expr function using the object and storing the return value to the result variable.
+	- defining the expr function :
+		- calling the get next token function to the current token.
+			- defining the get token function:
+				- while loop to checking current char is not none:
+					- true, check it is space
+						- if yes, calling the skip whitespace function.
+							- defining the skip white space:
+								- checking if the char is not empty and it is space, call advance function.
+									- defining advance function
+										- incrementing the position.
+										- checking the pos is greater than length of text -1 .
+											- if yes, making current character equal to None.
+										- else , making current character equal to position of text.
+						- continue 
+					- check it is digit:
+						- if yes, return Token(int, call to integer function)
+							- definition for integer function
+								- initialize result = ''
+								- check while current char is not none and it is digit
+									- if yes, add character by character 
+									- call advance function.
+								- return int(result)	
+					- check for + :
+						- if yes, call advance function 
+						- return Token(PLUS, +)
+					- check for - :
+						- call advance
+						- return Token(MINUS, -)
+					- if nothing matches call error
+				- if current char is none, return Token(EOF, None)
+		- storing the current token to left
+		- calling eat of left type
+				- eat function definition:
+					checks whether the current token type and the passed token is equal.
+						-if yes, calls the get next token function and stores it in current token.
+		- again stores the latest token in op and calls the eat function.
+		- similarly eat function is repeated.
+		- again the next token is stored in the right and calls the eat function.
+		- checks whether op type is PLUS or MINUS
+			- if PLUS , adds left and right
+		- else
+			- subtracts the values.
+		- this returns the result variable to the result variable.
+
+- Prints the result.
+
+
+
+What is Lexeme:
+	- sequence of characters that form a token.
+		example: 432, 4, 43, 90, 1
+Parsing(Also known as syntax analysis):
+	- The process of recognizing a phrase in the stream of tokens is called parsing.
+	example: PLUS, MINUS, INTEGER.
+	- The part of an interpreter or compiler that performs that job is called a parser(also known as syntax analyzer).
+
+		 
+
+##PART-3 - For doing multiple adds and subtracts with multiple numbers
+
+Syntax Diagram:
+	- Graphical Representation of a programming language's syntax rules., basically it shows you which statements are allowed in your programming language and which are not.
+
+They mainly serve two purposes:
+	- They graphically represent the specification (grammar) of a programming language.
+	- They can be used to help you write your parser.
+
+- Theb plus or other sign should be followed by an term(integer). 
+
+
+Token Types: INT, PLUS, EOF, MINUS
+	- EOF - it is a token used to indicate that there is no more input left for lexical analysis.
+
+
+EOFError - It is raised when one of the built-in functions input() ot raw_input() hits an end of file condition(EOF) without reading any data.
+
+EOF - ctrl + D or ctrl + Z
+
+
+- calls the Interpreter class and passes text to it and initializes the parameters
+	- defining the __init__ function
+		- initializing the text to text
+		- making pos = 0
+		- current token = None
+		- current char = text[self.pos]
+
+
+	- defining error function
+		- printing if there is an error
+
+- calls the expr function using the object and storing the return value to the result variable.
+	- defining the expr function :
+		- calling the get next token function to the current token.
+			- defining the get token function:
+				- while loop to checking current char is not none:
+					- true, check it is space
+						- if yes, calling the skip whitespace function.
+							- defining the skip white space:
+								- checking if the char is not empty and it is space, call advance function.
+									- defining advance function
+										- incrementing the position.
+										- checking the pos is greater than length of text -1 .
+											- if yes, making current character equal to None.
+										- else , making current character equal to position of text.
+						- continue 
+					- check it is digit:
+						- if yes, return Token(int, call to integer function)
+							- definition for integer function
+								- initialize result = ''
+								- check while current char is not none and it is digit
+									- if yes, add character by character 
+									- call advance function.
+								- return int(result)	
+					- check for + :
+						- if yes, call advance function 
+						- return Token(PLUS, +)
+					- check for - :
+						- call advance
+						- return Token(MINUS, -)
+					- if nothing matches call error
+				- if current char is none, return Token(EOF, None)
+		- calling the term function to the result variable result
+			- defining the function term():
+				- storing the current token to the variable token
+				- calling eat function and passing INTEGER.
+					- def eat function():
+						- checking the type of the current token the type passed are same, if yes call the get next token and store it in current token variable.
+			     	- returning the token. value
+			- checking if the current token type is PLUS , MINUS in while loop
+				- storing current token in token variable
+				- checking token type is plus:
+					- if yes adding result with the term function
+				- else if checking it is MINUS:
+					- if yes subtracting the result with the term function
+			- returning the result
+
+- Prints the result.
+
+
+
+##PART4 - Making the interpreter for doing multiplication and division for various parameters.
+
+Context- free grammars(in short, grammars) or also called as BNF (Backus- Naur Form)
+
+- Reasons to use grammars:
+		- Specifies the syntax of a programming language in a concise manner.
+		- Grammar can serve as great documentation
+		- Parser Generator- Rules , which accept a grammar as an input and automatically generate a parser for you based on that grammar.
+
+Example of grammar: expr : factor((MUL | DIV) factor)*
+		    factor : INTEGER
+		example: 7*4/2*3
+
+Grammar consists of sequence of rules, also known ad productions.
+Syntax of Grammar:
+		-> non-terminal, called head/ left-hand side 
+		-> colon :
+		-> sequence of terminals and/or non-terminals, called body or right-hand side
+
+- Terminals - ADD/SUB/MUL/DIV/ INTEGER
+- non terminals - expr and factors
+	factor - It is nothing but an Integer.
+
+| - Alternatives. A bar means “or”. So (MUL | DIV) means either MUL or DIV.
+( … ) - An open and closing parentheses mean grouping of terminals and/or non-terminals as in (MUL | DIV).
+( … )* - Match contents within the group zero or more times.
+
+
+
+Token Types: INT, DIV, EOF, MUL
+	- EOF - it is a token used to indicate that there is no more input left for lexical analysis.
+
+
+EOFError - It is raised when one of the built-in functions input() ot raw_input() hits an end of file condition(EOF) without reading any data.
+
+EOF - ctrl + D or ctrl + Z
+
+
+- calls the Interpreter class and passes text to it and initializes the parameters
+	- defining the __init__ function
+		- initializing the text to text
+		- making pos = 0
+		- current char = text[self.pos]
+
+
+	- defining error function
+		- printing if there is an error
+
+- calls the expr function using the object and storing the return value to the result variable.
+	- defining the expr function :
+		- calling the get next token function to the current token.
+			- defining the get token function:
+				- while loop to checking current char is not none:
+					- true, check it is space
+						- if yes, calling the skip whitespace function.
+							- defining the skip white space:
+								- checking if the char is not empty and it is space, call advance function.
+									- defining advance function
+										- incrementing the position.
+										- checking the pos is greater than length of text -1 .
+											- if yes, making current character equal to None.
+										- else , making current character equal to position of text.
+						- continue 
+					- check it is digit:
+						- if yes, return Token(int, call to integer function)
+							- definition for integer function
+								- initialize result = ''
+								- check while current char is not none and it is digit
+									- if yes, add character by character 
+									- call advance function.
+								- return int(result)	
+					- check for + :
+						- if yes, call advance function 
+						- return Token(PLUS, +)
+					- check for - :
+						- call advance
+						- return Token(MINUS, -)
+					- if nothing matches call error
+				- if current char is none, return Token(EOF, None)
+		- calling the term function to the result variable result
+			- defining the function term():
+				- storing the current token to the variable token
+				- calling eat function and passing INTEGER.
+					- def eat function():
+						- checking the type of the current token the type passed are same, if yes call the get next token and store it in current token variable.
+			     	- returning the token. value
+			- checking if the current token type is PLUS , MINUS in while loop
+				- storing current token in token variable
+				- checking token type is plus:
+					- if yes adding result with the term function
+				- else if checking it is MINUS:
+					- if yes subtracting the result with the term function
+			- returning the result
+
+- Prints the result.
+
+
+This part is same as part3, but they did this for MUL and DIV. the minute difference are as follows:
+	- They Created a new class Lexer and defined all the character level function inside that. that is converting to token one by one
+		- The functions inside Lexer are:
+			- advance
+			- skip whitespace
+			- get next token
+			- integer
+			- error
+
+	- They Created a class Interpreter and done all the parsing work inside it.
+		-the functions inside the Interpreter are:
+			- expr
+			- factor
+			- eat
+
+
+
+##PART-5
+- Creating the interpreter for any no. of operators and any type of operators.
+
+Associativity and precedence:
+	- The * and / have high precedence than + and - , the precedence is useful when we have a expression with more number of operators, then we need to use the precedence rule to do the calculations.
+	- If we have expression with same precedence operators, then the associativity is taken place, that is left to right /  right to left.
+	- The +, - and *,/ are left associative.
+
+
+Here are the rules for how to construct a grammar from the precedence table:
+
+1.For each level of precedence define a non-terminal(expr or factor). The body of a production for the non-terminal should contain arithmetic operators from that level and non-terminals for the next higher level of precedence.
+
+2.Create an additional non-terminal factor for basic units of expression, in our case, integers. The general rule is that if you have N levels of precedence, you will need N + 1 non-terminals in total: one non-terminal for each level plus one non-terminal for basic units of expression.
+
+
+
+Code :
+
+Token Types: INT, DIV, EOF, MUL, MINUS, PLUS
+	- EOF - it is a token used to indicate that there is no more input left for lexical analysis.
+
+
+EOFError - It is raised when one of the built-in functions input() or raw_input() hits an end of file condition(EOF) without reading any data.
+
+EOF - ctrl + D or ctrl + Z
+
+- Calling the Lexer Class and pass text to it
+	- calls the Lexer class and passes text to it and initializes the parameters
+	    - defining the __init__ function
+		- initializing the text to text
+		- making pos = 0
+		- current char = text[self.pos]
+
+
+	    - defining error function
+		- printing if there is an error
+
+- Calling the interpreter class and passing the Lexer to it
+
+	- calling the interpreter class:
+		- initializing the self.lexer to lexer
+		- making current token to self. lexer. get token function
+			- calling the get next token function to the current token.
+			- defining the get token function:
+				- while loop to checking current char is not none:
+					- true, check it is space
+						- if yes, calling the skip whitespace function.
+							- defining the skip white space:
+								- checking if the char is not empty and it is space, call advance function.
+									- defining advance function
+										- incrementing the position.
+										- checking the pos is greater than length of text -1 .
+											- if yes, making current character equal to None.
+										- else , making current character equal to position of text.
+						- continue 
+					- check it is digit:
+						- if yes, return Token(int, call to integer function)
+							- definition for integer function
+								- initialize result = ''
+								- check while current char is not none and it is digit
+									- if yes, add character by character 
+									- call advance function.
+								- return int(result)	
+					- check for + :
+						- if yes, call advance function 
+						- return Token(PLUS, +)
+					- check for - :
+						- call advance
+						- return Token(MINUS, -)
+					- check for * :
+						- if yes, call advance function 
+						- return Token(MUL, *)
+					- check for / :
+						- call advance
+						- return Token(DIV, /)
+					- if nothing matches call error
+				- if current char is none, return Token(EOF, None)
+
+- calls the expr function using the object and storing the return value to the result variable.
+	- defining the expr function :
+		- calling the term function to the result variable result
+			- defining the function term():
+				- calling the function factor and storing it to an res variable.
+					- defining the factor function
+						- storing the current token to the variable token
+						- calling eat function and passing INTEGER.
+							- def eat function():
+								- checking the type of the current token the type passed are same, if yes call the get next token and store it in current token variable.
+				     		- returning the token. value
+
+				- checking if the current token type is in MUL / DIV
+				- if yes , check whether it is MUL:
+					- if yes call eat of MUL 
+					- add res with the factor function
+				- else check it is DIV:
+					- if yes call eat of DIV
+					- add res with the factor function
+				return res 
+		- in while check whether the current  token is in PLUS / MINUS
+		- if yes, check whether it is PLUS
+			- if yes, call eat of PLUS
+			- add result with the term function
+		- else check whether it is MINUS
+			- if yes , call eat with MINUS
+			- add result with the term function
+
+		return result				
+
+- Prints the result.
+
+
+
+##PART-6
+- adding parenthesis to the part 5
+
+
+Code :
+
+Token Types: INT, DIV, EOF, MUL, MINUS, PLUS,LPARAM, RPARAM
+	- EOF - it is a token used to indicate that there is no more input left for lexical analysis.
+
+
+EOFError - It is raised when one of the built-in functions input() or raw_input() hits an end of file condition(EOF) without reading any data.
+
+EOF - ctrl + D or ctrl + Z
+
+- Calling the Lexer Class and pass text to it
+	- calls the Lexer class and passes text to it and initializes the parameters
+	    - defining the __init__ function
+		- initializing the text to text
+		- making pos = 0
+		- current char = text[self.pos]
+
+
+	    - defining error function
+		- printing if there is an error
+
+- Calling the interpreter class and passing the Lexer to it
+
+	- calling the interpreter class:
+		- initializing the self.lexer to lexer
+		- making current token to self. lexer. get token function
+			- calling the get next token function to the current token.
+			- defining the get token function:
+				- while loop to checking current char is not none:
+					- true, check it is space
+						- if yes, calling the skip whitespace function.
+							- defining the skip white space:
+								- checking if the char is not empty and it is space, call advance function.
+									- defining advance function
+										- incrementing the position.
+										- checking the pos is greater than length of text -1 .
+											- if yes, making current character equal to None.
+										- else , making current character equal to position of text.
+						- continue 
+					- check it is digit:
+						- if yes, return Token(int, call to integer function)
+							- definition for integer function
+								- initialize result = ''
+								- check while current char is not none and it is digit
+									- if yes, add character by character 
+									- call advance function.
+								- return int(result)	
+					- check for + :
+						- if yes, call advance function 
+						- return Token(PLUS, +)
+					- check for - :
+						- call advance
+						- return Token(MINUS, -)
+					- check for * :
+						- if yes, call advance function 
+						- return Token(MUL, *)
+					- check for / :
+						- call advance
+						- return Token(DIV, /)
+					- if nothing matches call error
+				- if current char is none, return Token(EOF, None)
+
+- calls the expr function using the object and storing the return value to the result variable.
+	- defining the expr function :
+		- calling the term function to the result variable result
+			- defining the function term():
+				- calling the function factor and storing it to an res variable.
+					- defining the factor function:
+						- storing the current token to the variable token
+						- checking whether the token type is INTEGER
+							-if yes, calling eat function and passing INTEGER.
+								- def eat function():
+									- checking the type of the current token the type passed are same, if yes call the get next token and store it in current token variable.
+						- else check it is LPARAM:
+							- check the token type is LPARAM
+								- if yes call eat of LPARAM
+								- call expr function and store the return in res variable
+								- call eat of RPARAM
+								- return res
+									
+				     		- returning the token. value
+
+				- checking if the current token type is in MUL / DIV
+				- if yes , check whether it is MUL:
+					- if yes call eat of MUL 
+					- add res with the factor function
+				- else check it is DIV:
+					- if yes call eat of DIV
+					- add res with the factor function
+				return res 
+		- in while check whether the current  token is in PLUS / MINUS
+		- if yes, check whether it is PLUS
+			- if yes, call eat of PLUS
+			- add result with the term function
+		- else check whether it is MINUS
+			- if yes , call eat with MINUS
+			- add result with the term function
+
+		return result				
+
+- Prints the result.
+
+
+##PART 7
+
+Syntax directed interpreters:
+	- The interpreters which would evaluate an expression as soon as the parser recognized a certain language construct like addition, subtraction, multiplication or division.
+	- Such Interpreters are called syntax- directed interpreters.
+
+-But this is not suitable if we need to work with complex constructs, So at that time, we need to build an intermediate representation.
+
+-Our parser will be responsible for building an IR and our interpreter will use it to interpret the input represented as the IR.
+
+-It turns out that a tree is a very suitable data structure for an IR.
+
+
+Trees:
+	- A tree is a data structure that consists of one or more nodes organized into a hierarchy
+	- The tree has one root, which is the top node
+	- All nodes except the root have a unique parent.
+	- A node with no children is called a leaf node.
+	- A node that has one or more children and that is not the root is called an interior node.
+	- The children can also be a complete subtrees.
+
+
+- The IR we are going to use is Abstract syntax tree(AST).
+
+The Parse tree: (built using expr, term, factor)
+	- A parse tree ,also known as concrete syntax tree. is an tree that represents the syntactic structure of a language construct according to our grammar definition.
+	- It shows how the start symbol of your grammar derives a certain string in the programming language.
+
+
+Differences between AST and Parse Trees:
+	- ASTs uses operators/operations as root and interior nodes and it uses operands as their children.
+	- ASTs do not use interior nodes to represent a grammar rule, unlike the parse tree does.
+	
+
+AST - Abstract Syntax tree
+	- Parse Tree: Represents the full syntactic structure of the source code, including all grammar rules and syntactic details. 
+	- AST: Abstracts away certain syntactic details and focuses on the logical structure and meaning of the code.
+
+Purpose:
+	- Parse Tree: Used primarily for syntax analysis, showing how the input is matched against the grammar rules.
+	- AST: Used for further processing like optimization, code generation, or analysis, focusing on the essential elements of the code.
+
+
+Nodes:
+	- Parse Tree: Includes nodes for both terminals (actual input tokens) and non-terminals (syntax rules).
+	- AST: Includes nodes for constructs and operations relevant to the code's semantics, ignoring syntactic details like parentheses or specific grammar rules.
+
+
+
+Now need to generate random expressions:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
